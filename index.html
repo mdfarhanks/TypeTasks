@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TypeTasks Flow — Type-Safe Task Tracker</title>
+  <meta name="description" content="A modern, type-safe task tracker built with TypeScript, strict data models, and an interactive UI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-badge">
+        <span class="brand-pulse-dot" aria-hidden="true"></span>
+        <span>Type-Safe Logic Layer</span>
+      </div>
+      <h1 class="app-title">TypeTasks Flow</h1>
+      <p class="app-tagline">
+        Engineered with a compile-time guaranteed TypeScript model: zero invalid states, complete immutability.
+      </p>
+    </header>
+
+    <!-- Metrics & Progress Bar -->
+    <section class="metrics-card" aria-label="Task completion progress">
+      <div class="metrics-header">
+        <span class="metrics-label" id="metrics-summary">Completion Rate</span>
+        <span class="metrics-counter" id="metrics-percent">0%</span>
+      </div>
+      <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </section>
+
+    <!-- Add Task Form -->
+    <section class="task-form-card" aria-label="Add new task">
+      <form id="task-form" class="task-form">
+        <div class="input-wrapper">
+          <span class="input-icon" aria-hidden="true">✦</span>
+          <input
+            type="text"
+            id="task-input"
+            class="task-input"
+            placeholder="What needs to be done? Enter a task..."
+            autocomplete="off"
+            required
+            aria-label="New task title"
+          />
+        </div>
+        <button type="submit" id="btn-add-task" class="btn-add">
+          <span aria-hidden="true">+</span> Add Task
+        </button>
+      </form>
+    </section>
+
+    <!-- Filter Controls -->
+    <nav class="filter-bar" aria-label="Task status filters">
+      <div class="filter-group" role="tablist">
+        <button type="button" class="filter-chip active" data-filter="all" id="filter-all" role="tab" aria-selected="true">
+          All <span class="filter-count" id="count-all">0</span>
+        </button>
+        <button type="button" class="filter-chip" data-filter="todo" id="filter-todo" role="tab" aria-selected="false">
+          Todo <span class="filter-count" id="count-todo">0</span>
+        </button>
+        <button type="button" class="filter-chip" data-filter="in-progress" id="filter-inprogress" role="tab" aria-selected="false">
+          In Progress <span class="filter-count" id="count-inprogress">0</span>
+        </button>
+        <button type="button" class="filter-chip" data-filter="done" id="filter-done" role="tab" aria-selected="false">
+          Done <span class="filter-count" id="count-done">0</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Task List (ul) -->
+    <main>
+      <ul id="task-list" class="task-list" aria-live="polite">
+        <!-- Dynamically rendered via app.js -->
+      </ul>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <span class="empty-icon" aria-hidden="true">📋</span>
+        <h2 class="empty-title">No tasks found</h2>
+        <p class="empty-subtitle" id="empty-subtitle">
+          Add your first task above to get started with TypeTasks.
+        </p>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>
+        Built by <strong style="color: var(--text-main);">Farhan</strong> • Architecture:
+        <span class="type-pill">TaskStatus = "todo" | "in-progress" | "done"</span>
+      </p>
+      <p>
+        Strict TypeScript Data Model • Static Web Application
+      </p>
+    </footer>
+  </div>
+
+  <!-- Module Script -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

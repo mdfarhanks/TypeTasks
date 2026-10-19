@@ -1,42 +1,83 @@
-# TypeTasks - Part 1: Typed Data Model
+# TypeTasks Flow — Type-Safe Task Tracker
 
-TypeTasks is a type-safe task tracker built with TypeScript. This repository contains **Part 1: The Typed Logic Layer**, defining the foundational data model and immutable task operations with strict type-checking and zero compiler errors.
+TypeTasks Flow is a sleek, modern, type-safe task tracker built with **HTML5, CSS3, and strict TypeScript**. 
 
-## Data Model & Types
+- **Live URL**: [https://mdfarhanks.github.io/TypeTasks/](https://mdfarhanks.github.io/TypeTasks/)
+- **Repository URL**: [https://github.com/mdfarhanks/TypeTasks](https://github.com/mdfarhanks/TypeTasks)
+
+---
+
+## Architecture Overview
+
+TypeTasks is built in two distinct layers:
+1. **Typed Logic Layer (`model.ts`)**: Defines the data model, strict status unions, and pure immutable task operations with compile-time safety.
+2. **Interactive UI Layer (`index.html`, `styles.css`, `app.ts`)**: A modern dark glassmorphism interface wired directly to typed operations with strict DOM casting (zero untyped logic, zero `any`).
+
+---
+
+## 1. Data Model (`model.ts`)
 
 ### `TaskStatus`
-A literal union type representing all possible task statuses:
+A literal union type representing all allowable task states:
 ```typescript
-type TaskStatus = "todo" | "in-progress" | "done";
+export type TaskStatus = "todo" | "in-progress" | "done";
 ```
 
-### `Task`
+### `Task` Interface
 The core task interface:
 ```typescript
-interface Task {
+export interface Task {
   id: number;
   title: string;
   status: TaskStatus;
 }
 ```
 
-## Core Operations
-
+### Typed Operations
 - `addTask(tasks: Task[], title: string): Task[]` — Appends a new task with unique numerical ID and `"todo"` status (immutable).
-- `completeTask(tasks: Task[], id: number): Task[]` — Updates matching task's status to `"done"` (immutable).
-- `filterByStatus(tasks: Task[], status: TaskStatus): Task[]` — Returns tasks matching the specified status. Enforces `TaskStatus` union at compile time.
-
-## Custom Operations ("Make It Yours")
-
-- `advanceTask(tasks: Task[], id: number): Task[]` — Moves a task through the workflow: `"todo"` &rarr; `"in-progress"` &rarr; `"done"`.
+- `completeTask(tasks: Task[], id: number): Task[]` — Immutably sets task status to `"done"`.
+- `filterByStatus(tasks: Task[], status: TaskStatus): Task[]` — Filters tasks strictly by `TaskStatus`. Invalid status strings cause compile-time errors.
+- `advanceTask(tasks: Task[], id: number): Task[]` — Moves tasks sequentially: `"todo"` &rarr; `"in-progress"` &rarr; `"done"`.
 - `deleteTask(tasks: Task[], id: number): Task[]` — Immutably removes a task by ID.
-- `countByStatus(tasks: Task[], status: TaskStatus): number` — Counts tasks currently matching a status.
-- `updateTaskTitle(tasks: Task[], id: number, newTitle: string): Task[]` — Immutably updates the title of a task.
+- `countByStatus(tasks: Task[], status: TaskStatus): number` — Counts tasks matching a status.
+- `updateTaskTitle(tasks: Task[], id: number, newTitle: string): Task[]` — Modifies task title preserving all other properties.
 
-## Verification & Compilation
+---
 
-Compile the project with TypeScript compiler:
+## 2. Interactive UI (`app.ts`, `index.html`, `styles.css`)
+
+- **Add Tasks**: Form submission calls `addTask` and updates the reactive UI.
+- **Advance & Complete**: Action buttons call `advanceTask` and `completeTask` to transition statuses.
+- **Filters**: Interactive chip tabs (`All`, `Todo`, `In Progress`, `Done`) call `filterByStatus` with live counts.
+- **Progress Tracking**: Real-time completion percentage and visual progress bar.
+- **Persistence**: Type-validated `localStorage` persistence preserves data across page reloads.
+
+---
+
+## 3. Compilation & Building
+
+Compile both `model.ts` and `app.ts` with zero type errors:
+
 ```bash
+# Run TypeScript compilation
+npm run build
+# Or directly with tsc:
 npx tsc
 ```
-Compiled with zero errors under `"strict": true`.
+
+The compiled JavaScript files (`model.js` and `app.js`) are emitted in the root directory for direct native ES module consumption via:
+```html
+<script type="module" src="app.js"></script>
+```
+
+---
+
+## 4. Deployment Instructions
+
+### GitHub Pages
+1. Push your repository to GitHub.
+2. Navigate to **Settings** &rarr; **Pages**.
+3. Under **Build and deployment**:
+   - Source: **Deploy from a branch**
+   - Branch: `main` (or `part-2-ui-ship`), folder: `/ (root)`.
+4. Click **Save**. The app will be live at `https://mdfarhanks.github.io/TypeTasks/` within minutes.
